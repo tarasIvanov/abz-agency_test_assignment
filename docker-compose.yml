@@ -1,5 +1,3 @@
-name: abz-agency-test
-
 services:
   app:
     build:
@@ -11,7 +9,8 @@ services:
     volumes:
       - ./:/var/www
     networks:
-      - abz-agency-network
+      - webserver-network
+      - db-network
     depends_on:
       - db
 
@@ -25,7 +24,7 @@ services:
       - ./:/var/www
       - ./nginx/conf.d:/etc/nginx/conf.d
     networks:
-      - abz-agency-network
+      - webserver-network
     depends_on:
       - app
 
@@ -43,10 +42,12 @@ services:
     ports:
       - "3307:3306"
     networks:
-      - abz-agency-network
+      - db-network
 
 networks:
-  abz-agency-network:
+  db-network:
+    driver: bridge
+  webserver-network:
     driver: bridge
 
 volumes:
